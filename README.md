@@ -5,13 +5,29 @@
 
 ## Introduction
 
-In this project, I build a mini honeynet in Azure and ingest log sources from various resources into a Log Analytics workspace, which is then used by Microsoft Sentinel to build attack maps, trigger alerts, and create incidents. I measured some security metrics in the insecure environment for 24 hours, apply some security controls to harden the environment, measure metrics for another 24 hours, then show the results below. The metrics we will show are:
+In this project, I set up a mini honeynet in Azure, simulating a vulnerable environment to monitor and analyze potential threats. Logs from various sources were ingested into a Log Analytics workspace, which was then integrated with Microsoft Sentinel to generate attack maps, trigger alerts, and create incidents.
 
-- SecurityEvent (Windows Event Logs)
-- Syslog (Linux Event Logs)
-- SecurityAlert (Log Analytics Alerts Triggered)
-- SecurityIncident (Incidents created by Sentinel)
-- AzureNetworkAnalytics_CL (Malicious Flows allowed into our honeynet)
+To assess the impact of security controls, I:
+
+✅ Collected baseline security metrics from the insecure environment over a 24-hour period.
+
+✅ Applied security hardening measures to improve the system’s defense.
+
+✅ Measured the post-hardening metrics for another 24 hours to compare results.
+
+Key Security Metrics Monitored:
+
+📌 SecurityEvent – Windows event logs
+
+📌 Syslog – Linux event logs
+
+📌 SecurityAlert – Alerts triggered in Log Analytics
+
+📌 SecurityIncident – Incidents detected by Microsoft Sentinel
+
+📌 AzureNetworkAnalytics_CL – Malicious network traffic detected
+
+This project demonstrates how proactive security measures can significantly reduce attack exposure and enhance threat visibility in a cloud environment.
 
 ## Architecture Before Hardening / Security Controls
 <img width="890" alt="image" src="https://github.com/user-attachments/assets/ded03a25-5b68-40d1-bb2f-6813754f3a09" />
@@ -21,19 +37,36 @@ In this project, I build a mini honeynet in Azure and ingest log sources from va
 <img width="834" alt="image" src="https://github.com/user-attachments/assets/a3a112e8-e299-4a33-bb95-c00a18fc1280" />
 
 
-The architecture of the mini honeynet in Azure consists of the following components:
+The mini honeynet in Azure was designed with the following key components:
 
-- Virtual Network (VNet)
-- Network Security Group (NSG)
-- Virtual Machines (2 windows, 1 linux)
-- Log Analytics Workspace
-- Azure Key Vault
-- Azure Storage Account
-- Microsoft Sentinel
+🔹 Virtual Network (VNet) – Provides network segmentation.
 
-For the "BEFORE" metrics, all resources were originally deployed, exposed to the internet. The Virtual Machines had both their Network Security Groups and built-in firewalls wide open, and all other resources are deployed with public endpoints visible to the Internet; aka, no use for Private Endpoints.
+🔹 Network Security Group (NSG) – Controls inbound/outbound traffic.
 
-For the "AFTER" metrics, Network Security Groups were hardened by blocking ALL traffic with the exception of my admin workstation, and all other resources were protected by their built-in firewalls as well as Private Endpoint
+🔹 Virtual Machines – (2 Windows, 1 Linux) act as monitored endpoints.
+
+🔹 Log Analytics Workspace – Collects and analyzes security logs.
+
+🔹 Azure Key Vault – Secures sensitive credentials.
+
+🔹 Azure Storage Account – Stores log data.
+
+🔹 Microsoft Sentinel – Functions as the SIEM, detecting and responding to threats.
+
+Security Posture: Before vs. After Hardening
+
+🛑 BEFORE:
+
+- All resources were fully exposed to the internet.
+- Virtual Machines had open NSGs and firewalls disabled.
+- Public endpoints were accessible without Private Endpoints or restrictions.
+
+✅ AFTER:
+
+- NSGs hardened to block all traffic except from a secured admin workstation.
+- Virtual Machines were secured using built-in firewalls and Private Endpoints.
+- All resources were removed from public exposure, reducing the attack surface.
+- This transformation highlights the impact of security hardening on cloud environments by minimizing exposure and improving threat resilience. 
 
 ## Attack Maps Before Hardening / Security Controls
 <img width="946" alt="image" src="https://github.com/user-attachments/assets/d30c9250-590c-4e56-ac2d-8eef155b6f94" />
@@ -76,6 +109,11 @@ Stop Time	2025-01-06T21:30:47.2782052Z
 
 ## Conclusion
 
-In this project, a mini honeynet was constructed in Microsoft Azure and log sources were integrated into a Log Analytics workspace. Microsoft Sentinel was employed to trigger alerts and create incidents based on the ingested logs. Additionally, metrics were measured in the insecure environment before security controls were applied, and then again after implementing security measures. It is noteworthy that the number of security events and incidents were drastically reduced after the security controls were applied, demonstrating their effectiveness.
+In this project, a mini honeynet was successfully deployed in Microsoft Azure, with log sources integrated into a Log Analytics workspace. Microsoft Sentinel was utilized to monitor the environment, triggering alerts and generating incidents based on ingested security logs.
 
-It is worth noting that if the resources within the network were heavily utilized by regular users, it is likely that more security events and alerts may have been generated within the 24-hour period following the implementation of the security controls.
+To assess the effectiveness of security controls, key metrics were measured:
+
+- Before hardening – Resources were fully exposed, resulting in a high volume of security events and incidents.
+- After implementing security controls – The number of security alerts and incidents significantly decreased, demonstrating the impact of a well-configured security posture.
+
+It is important to note that in a real-world scenario with active user traffic, more security events and alerts may have been generated even after hardening the environment. However, this project highlights how proactive security measures can effectively reduce vulnerabilities and enhance cloud security resilience. 
